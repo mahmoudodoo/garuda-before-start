@@ -3,6 +3,21 @@
 # Update system and install essential packages
 sudo pacman -Syu --noconfirm
 
+# Install necessary development tools for building AUR packages
+sudo pacman -S --needed --noconfirm base-devel git
+
+# Install yay (Yet Another Yaourt)
+if ! command -v yay &> /dev/null; then
+    echo "yay not found, installing it now..."
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf yay
+else
+    echo "yay is already installed."
+fi
+
 # Install debtap
 sudo pacman -S --noconfirm debtap
 
