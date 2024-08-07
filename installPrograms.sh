@@ -1,83 +1,57 @@
 #!/bin/bash
 
-# Function to run commands as non-root user
-run_as_user() {
-    sudo -u $SUDO_USER "$@"
-}
-
-# Update system
+# Update system and install essential packages
 sudo pacman -Syu --noconfirm
-
-# Install yay
-if ! command -v yay &> /dev/null; then
-    sudo pacman -S --needed base-devel git --noconfirm
-    run_as_user git clone https://aur.archlinux.org/yay.git
-    cd yay
-    run_as_user makepkg -si --noconfirm
-    cd ..
-    rm -rf yay
-fi
 
 # Install debtap
-run_as_user yay -S debtap --noconfirm
+sudo pacman -S --noconfirm debtap
 
 # Install Visual Studio Code
-sudo pacman -S code --noconfirm
+sudo pacman -S --noconfirm code
 
 # Install vokoscreen
-sudo pacman -S vokoscreen --noconfirm
+sudo pacman -S --noconfirm vokoscreen
 
 # Install DBeaver
-sudo pacman -S dbeaver --noconfirm
+sudo pacman -S --noconfirm dbeaver
 
 # Install Zoom
-run_as_user yay -S zoom --noconfirm
+yay -S --noconfirm zoom
 
 # Install Google Chrome
-run_as_user yay -S google-chrome --noconfirm
+yay -S --noconfirm google-chrome
 
 # Install Insomnia
-run_as_user yay -S insomnia --noconfirm
+yay -S --noconfirm insomnia
 
 # Install WhatsApp
-run_as_user yay -S whatsapp-nativefier --noconfirm
+yay -S --noconfirm whatsapp-nativefier
 
 # Install Telegram
-sudo pacman -S telegram-desktop --noconfirm
+sudo pacman -S --noconfirm telegram-desktop
 
 # Install Jenkins
-run_as_user yay -S jenkins --noconfirm
+yay -S --noconfirm jenkins
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
 
 # Install Docker and Docker CLI
-sudo pacman -S docker docker-compose --noconfirm
-sudo systemctl start docker
+sudo pacman -S --noconfirm docker docker-compose
 sudo systemctl enable docker
-sudo usermod -aG docker $SUDO_USER
-
-# Install AWS CLI
-sudo pacman -S aws-cli --noconfirm
-
-# Install Azure CLI
-run_as_user yay -S azure-cli-bin --noconfirm
-
-# Install Google Cloud SDK
-run_as_user yay -S google-cloud-sdk --noconfirm
+sudo systemctl start docker
+sudo usermod -aG docker $USER
 
 # Install npm and JavaScript frameworks
-sudo pacman -S npm --noconfirm
-sudo npm install -g @angular/cli @ionic/cli react-native-cli create-react-app @vue/cli --force
+sudo pacman -S --noconfirm nodejs npm
 
 # Install Shotcut
-run_as_user yay -S shotcut --noconfirm
+sudo pacman -S --noconfirm shotcut
 
 # Install VLC media player
-sudo pacman -S vlc --noconfirm
+sudo pacman -S --noconfirm vlc
 
 # Install Popsicle
-sudo pacman -S popsicle --noconfirm
+yay -S --noconfirm popsicle-git
 
-# Final update and cleanup
-sudo pacman -Syu --noconfirm
-run_as_user yay -Yc --noconfirm
-
-echo "Installation complete. Please reboot your system to apply all changes."
+# Post-installation instructions
+echo "Script completed. Some applications like Docker require a reboot or re-login to apply group changes."
